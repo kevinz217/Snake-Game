@@ -69,6 +69,22 @@ public class Snake {
         }
     }
 
+    public BufferedImage getPlayerImage() {
+        if (direction.equals("up")) {
+            return up;
+        }
+        if (direction.equals("down")) {
+            return down;
+        }
+        if (direction.equals("left")) {
+            return left;
+        }
+        if (direction.equals("right")) {
+            return right;
+        }
+        return null;
+    }
+
     public void eatFruit() {
         score++;
         // add code for length
