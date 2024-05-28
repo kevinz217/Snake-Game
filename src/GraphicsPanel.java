@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GraphicsPanel // extends JPanel implements KeyListener, MouseListener, ActionListener
+public class GraphicsPanel extends JPanel implements KeyListener, MouseListener, ActionListener
         {
     private BufferedImage background;
     private Snake Snake;
@@ -19,14 +19,14 @@ public class GraphicsPanel // extends JPanel implements KeyListener, MouseListen
     private Timer timer;
     private int time;
 
-   /* public GraphicsPanel(String name) {
+    public GraphicsPanel(String name) {
         try {
             background = ImageIO.read(new File("src/assets/background.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        player = new Player("src/assets/marioleft.png", "src/assets/marioright.png", name);
-        coins = new ArrayList<>();
+        // player = new Player("src/assets/marioleft.png", "src/assets/marioright.png", name);
+        // coins = new ArrayList<>();
         pressedKeys = new boolean[128];
         time = 0;
         timer = new Timer(1000, this); // this Timer will call the actionPerformed interface method every 1000ms = 1 second
@@ -41,11 +41,12 @@ public class GraphicsPanel // extends JPanel implements KeyListener, MouseListen
     public void paintComponent(Graphics g) {
         super.paintComponent(g);  // just do this
         g.drawImage(background, 0, 0, null);  // the order that things get "painted" matter; we put background down first
-        g.drawImage(player.getPlayerImage(), player.getxCoord(), player.getyCoord(), null);
+        // g.drawImage(player.getPlayerImage(), player.getxCoord(), player.getyCoord(), null);
 
         // this loop does two things:  it draws each Coin that gets placed with mouse clicks,
         // and it also checks if the player has "intersected" (collided with) the Coin, and if so,
         // the score goes up and the Coin is removed from the arraylist
+        /*
         for (int i = 0; i < coins.size(); i++) {
             Coin coin = coins.get(i);
             g.drawImage(coin.getImage(), coin.getxCoord(), coin.getyCoord(), null); // draw Coin
@@ -56,12 +57,13 @@ public class GraphicsPanel // extends JPanel implements KeyListener, MouseListen
                 i--;
             }
         }
-
+            */
         // draw score
         g.setFont(new Font("Courier New", Font.BOLD, 24));
-        g.drawString(player.getName() + "'s Score: " + player.getScore(), 20, 40);
+        // g.drawString(player.getName() + "'s Score: " + player.getScore(), 20, 40);
         g.drawString("Time: " + time, 20, 70);
 
+        /*
         // player moves left (A)
         if (pressedKeys[65]) {
             player.faceLeft();
@@ -83,6 +85,7 @@ public class GraphicsPanel // extends JPanel implements KeyListener, MouseListen
         if (pressedKeys[83]) {
             player.moveDown();
         }
+        */
     }
 
     private void playCoinSound() {
@@ -118,6 +121,7 @@ public class GraphicsPanel // extends JPanel implements KeyListener, MouseListen
     public void mousePressed(MouseEvent e) { } // unimplemented
 
     public void mouseReleased(MouseEvent e) {
+        /*
         if (e.getButton() == MouseEvent.BUTTON1) {  // left mouse click
             Point mouseClickLocation = e.getPoint();
             Coin coin = new Coin(mouseClickLocation.x, mouseClickLocation.y);
@@ -128,6 +132,7 @@ public class GraphicsPanel // extends JPanel implements KeyListener, MouseListen
                 player.turn();
             }
         }
+        */
     }
 
     public void mouseEntered(MouseEvent e) { } // unimplemented
@@ -141,5 +146,4 @@ public class GraphicsPanel // extends JPanel implements KeyListener, MouseListen
         }
     }
 
-    */
 }

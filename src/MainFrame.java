@@ -1,14 +1,14 @@
 import javax.swing.*;
 
-public class MainFrame //implements Runnable
+public class MainFrame implements Runnable
   {
 
     private GraphicsPanel panel;
 
-     /* public MainFrame(String name) {
+     public MainFrame(String name) {
         JFrame frame = new JFrame("Snake Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(960, 580); // 540 height of image + 40 for window menu bar
+        frame.setSize(640, 600); // 600 height of image + 40 for window menu bar
         frame.setLocationRelativeTo(null); // auto-centers frame in screen
 
         // create and add panel
@@ -28,5 +28,5 @@ public class MainFrame //implements Runnable
             panel.repaint();  // we don't ever call "paintComponent" directly, but call this to refresh the panel
         }
     }
-      */
+
 }

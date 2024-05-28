@@ -20,8 +20,8 @@ public class Snake {
         yCoord = 435;
         score = 0;
         try {
-            left = ImageIO.read(new File(leftImg));
-            right = ImageIO.read(new File(rightImg));
+            left = ImageIO.read(new File("src/assets/left.png"));
+            right = ImageIO.read(new File("src/assets/right.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -68,6 +68,7 @@ public class Snake {
             xCoord += MOVE_AMT;
         }
     }
+
     public void eatFruit() {
         score++;
         // add code for length
