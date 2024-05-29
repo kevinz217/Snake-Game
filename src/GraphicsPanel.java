@@ -23,6 +23,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         try {
             background = ImageIO.read(new File("src/assets/background.png"));
         } catch (IOException e) {
+            System.out.println("No background ! !");
             System.out.println(e.getMessage());
         }
         snake = new Snake("src/assets/test.png", "src/assets/test.png", name);
@@ -66,6 +67,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         g.setFont(new Font("Courier New", Font.BOLD, 24));
         g.drawString("Your Score: " + snake.getScore(), 20, 40);
         g.drawString("Time: " + time, 20, 70);
+        g.drawString("Test val: " + snake.getCount(), 20, 100);
 
 
         // player moves left (A)

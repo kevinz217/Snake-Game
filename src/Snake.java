@@ -44,6 +44,9 @@ public class Snake {
         return score;
     }
     public String getDirection() {return direction;}
+    public int getCount() {
+        return count;
+    }
 
     public void faceDirection(String direction) {
         this.direction = direction;
