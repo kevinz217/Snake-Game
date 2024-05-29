@@ -13,9 +13,9 @@ import java.util.ArrayList;
 public class GraphicsPanel extends JPanel implements KeyListener, MouseListener, ActionListener
         {
     private BufferedImage background;
-    private Snake Snake;
+    private Snake snake;
     private boolean[] pressedKeys;
-    //private ArrayList<Coin> coins;
+    //private ArrayList<Fruit> fruits;
     private Timer timer;
     private int time;
 
@@ -25,7 +25,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        // player = new Player("src/assets/marioleft.png", "src/assets/marioright.png", name);
+        snake = new Snake("src/assets/test.png", "src/assets/test.png", name);
         // coins = new ArrayList<>();
         pressedKeys = new boolean[128];
         time = 0;
@@ -41,7 +41,11 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     public void paintComponent(Graphics g) {
         super.paintComponent(g);  // just do this
         g.drawImage(background, 0, 0, null);  // the order that things get "painted" matter; we put background down first
-        // g.drawImage(player.getPlayerImage(), player.getxCoord(), player.getyCoord(), null);
+        g.drawImage(snake.getPlayerImage(), snake.getxCoord(), snake.getyCoord(), null);
+        Fruit apple = new Fruit(320, 400, "src/assets/apple.png");
+        Fruit orange = new Fruit(320, 480, "src/assets/orange.png");
+        g.drawImage(apple.getImage(), apple.getxCoord(), apple.getyCoord(), null);
+        g.drawImage(orange.getImage(), orange.getxCoord(), orange.getyCoord(), null);
 
         // this loop does two things:  it draws each Coin that gets placed with mouse clicks,
         // and it also checks if the player has "intersected" (collided with) the Coin, and if so,
@@ -60,32 +64,38 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
             */
         // draw score
         g.setFont(new Font("Courier New", Font.BOLD, 24));
-        // g.drawString(player.getName() + "'s Score: " + player.getScore(), 20, 40);
+        g.drawString("Your Score: " + snake.getScore(), 20, 40);
         g.drawString("Time: " + time, 20, 70);
 
-        /*
+
         // player moves left (A)
         if (pressedKeys[65]) {
-            player.faceLeft();
-            player.moveLeft();
+            if (!snake.getDirection().equals("right")) {
+                snake.faceDirection("left");
+            }
         }
 
         // player moves right (D)
         if (pressedKeys[68]) {
-            player.faceRight();
-            player.moveRight();
+            if (!snake.getDirection().equals("left")) {
+                snake.faceDirection("right");
+            }
         }
 
         // player moves up (W)
         if (pressedKeys[87]) {
-            player.moveUp();
+            if (!snake.getDirection().equals("up")) {
+                snake.faceDirection("down");
+            }
         }
 
         // player moves down (S)
         if (pressedKeys[83]) {
-            player.moveDown();
+            if (!snake.getDirection().equals("down")) {
+                snake.faceDirection("up");
+            }
         }
-        */
+        snake.move();
     }
 
     private void playCoinSound() {

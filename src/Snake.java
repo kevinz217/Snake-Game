@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Snake {
-    private final double MOVE_AMT = 0.4;
+    private final double MOVE_AMT = 40;
     private String direction;
     private int score;
     private BufferedImage right;
@@ -14,14 +14,19 @@ public class Snake {
     private double yCoord;
     private BufferedImage up;
     private BufferedImage down;
+    private int count;
     public Snake(String leftImg, String rightImg, String name) {
         direction = "right";
-        xCoord = 50; // starting position is (50, 435), right on top of ground
-        yCoord = 435;
+        xCoord = 40; // starting position is (50, 435), right on top of ground
+        yCoord = 400;
         score = 0;
+        count = 0;
         try {
-            left = ImageIO.read(new File("src/assets/left.png"));
-            right = ImageIO.read(new File("src/assets/right.png"));
+            left = ImageIO.read(new File(leftImg));
+            right = ImageIO.read(new File(rightImg));
+            // temp images
+            up = ImageIO.read(new File(rightImg));
+            down = ImageIO.read(new File(rightImg));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -38,34 +43,28 @@ public class Snake {
     public int getScore() {
         return score;
     }
+    public String getDirection() {return direction;}
 
-    public void faceRight() {
-        direction = "right";
-    }
-
-    public void faceLeft() {
-        direction = "left";
-    }
-    public void faceUp() {
-        direction = "up";
-    }
-
-    public void faceDown() {
-        direction = "down";
+    public void faceDirection(String direction) {
+        this.direction = direction;
     }
 
     public void move() {
-        if (direction.equals("up")) {
-            yCoord += MOVE_AMT;
-        }
-        if (direction.equals("down")) {
-            yCoord -= MOVE_AMT;
-        }
-        if (direction.equals("left")) {
-            xCoord -= MOVE_AMT;
-        }
-        if (direction.equals("right")) {
-            xCoord += MOVE_AMT;
+        count++;
+        if (count == 250) {
+            if (direction.equals("up")) {
+                yCoord += MOVE_AMT;
+            }
+            if (direction.equals("down")) {
+                yCoord -= MOVE_AMT;
+            }
+            if (direction.equals("left")) {
+                xCoord -= MOVE_AMT;
+            }
+            if (direction.equals("right")) {
+                xCoord += MOVE_AMT;
+            }
+            count = 0;
         }
     }
 
