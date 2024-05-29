@@ -41,7 +41,9 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);  // just do this
-        g.drawImage(background, 0, 0, null);  // the order that things get "painted" matter; we put background down first
+        g.drawImage(background, 0, 0, null);
+        // black background
+        setBackground(Color.black);
         g.drawImage(snake.getPlayerImage(), snake.getxCoord(), snake.getyCoord(), null);
         Fruit apple = new Fruit(320, 400, "src/assets/apple.png");
         Fruit orange = new Fruit(320, 480, "src/assets/orange.png");
@@ -65,6 +67,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
             */
         // draw score
         g.setFont(new Font("Courier New", Font.BOLD, 24));
+        g.setColor(Color.WHITE);
         g.drawString("Your Score: " + snake.getScore(), 20, 40);
         g.drawString("Time: " + time, 20, 70);
         g.drawString("Test val: " + snake.getCount(), 20, 100);
