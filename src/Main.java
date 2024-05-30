@@ -1,5 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        WelcomeFrame f = new WelcomeFrame();
+        MainFrame f = new MainFrame("c");
+
     }
 }

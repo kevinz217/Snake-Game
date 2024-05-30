@@ -10,8 +10,8 @@ public class Snake {
     private int score;
     private BufferedImage right;
     private BufferedImage left;
-    private double xCoord;
-    private double yCoord;
+    private int xCoord;
+    private int yCoord;
     private BufferedImage up;
     private BufferedImage down;
     private int count;
@@ -91,5 +91,10 @@ public class Snake {
         score++;
         // add code for length
     }
-
+    public Rectangle playerRect() {
+        int imageHeight = getPlayerImage().getHeight();
+        int imageWidth = getPlayerImage().getWidth();
+        Rectangle rect = new Rectangle( xCoord, yCoord, imageWidth, imageHeight);
+        return rect;
+    }
 }

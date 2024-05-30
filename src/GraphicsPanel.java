@@ -18,6 +18,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     //private ArrayList<Fruit> fruits;
     private Timer timer;
     private int time;
+    private boolean gameOver;
 
     public GraphicsPanel(String name) {
         try {
@@ -26,6 +27,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
             System.out.println("No background ! !");
             System.out.println(e.getMessage());
         }
+        gameOver = false;
         snake = new Snake("src/assets/test.png", "src/assets/test.png", name);
         // coins = new ArrayList<>();
         pressedKeys = new boolean[128];
@@ -71,6 +73,10 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         g.drawString("Your Score: " + snake.getScore(), 20, 40);
         g.drawString("Time: " + time, 20, 70);
         g.drawString("Test val: " + snake.getCount(), 20, 100);
+        Point mouseP = getMousePosition();
+        g.drawRect(mouseP.x, mouseP.y, 40, 40);
+        g.fillRect(mouseP.x, mouseP.y, 40, 40);
+        Rectangle rectangle = new Rectangle(mouseP.x, mouseP.y, 40, 40);
 
 
         // player moves left (A)
@@ -100,7 +106,13 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
                 snake.faceDirection("up");
             }
         }
-        snake.move();
+        if (!gameOver) {
+            snake.move();
+        }
+
+        if (snake.playerRect().intersects(rectangle)) {
+            gameOver = true;
+        }
     }
 
     private void playCoinSound() {
@@ -150,9 +162,13 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         */
     }
 
-    public void mouseEntered(MouseEvent e) { } // unimplemented
+    public void mouseEntered(MouseEvent e) {
+    }
 
-    public void mouseExited(MouseEvent e) { } // unimplemented
+    public void mouseExited(MouseEvent e) {
+        gameOver = true;
+
+    }
 
     // ACTIONLISTENER INTERFACE METHODS: used for buttons AND timers!
     public void actionPerformed(ActionEvent e) {
