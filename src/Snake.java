@@ -91,6 +91,10 @@ public class Snake {
         score++;
         // add code for length
     }
+
+    public void SETSCORE(int score) {
+        this.score = score;
+    }
     public Rectangle playerRect() {
         int imageHeight = getPlayerImage().getHeight();
         int imageWidth = getPlayerImage().getWidth();

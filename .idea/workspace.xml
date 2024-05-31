@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="792c0a7f-403a-4232-b020-636c10960ac1" name="Changes" comment="crude build">
+    <list default="true" id="792c0a7f-403a-4232-b020-636c10960ac1" name="Changes" comment="Im not sure what ive changed right now">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GraphicsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GraphicsPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Snake.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Snake.java" afterDir="false" />
@@ -87,7 +87,14 @@
       <option name="project" value="LOCAL" />
       <updated>1717159946197</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Im not sure what ive changed right now">
+      <created>1717160496085</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1717160496085</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -107,6 +114,7 @@
     <MESSAGE value="Small build (needs the growing methods and collision)" />
     <MESSAGE value="test" />
     <MESSAGE value="crude build" />
-    <option name="LAST_COMMIT_MESSAGE" value="crude build" />
+    <MESSAGE value="Im not sure what ive changed right now" />
+    <option name="LAST_COMMIT_MESSAGE" value="Im not sure what ive changed right now" />
   </component>
 </project>

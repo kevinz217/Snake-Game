@@ -37,6 +37,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         timer2 = new Timer(500, this);
         timer.start();
         timer2.start();
+        snake.SETSCORE(50);
         addKeyListener(this);
         addMouseListener(this);
         setFocusable(true); // this line of code + one below makes this panel active for keylistener events
@@ -81,6 +82,8 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         g.drawString("Your Score: " + snake.getScore(), 20, 40);
         g.drawString("Time: " + time, 20, 70);
         g.drawString("Test val: " + snake.getCount(), 20, 100);
+        g.drawString("Timer2 val: " + timer2.getDelay(), 20, 130);
+
         Point mouseP = getMousePosition();
         g.drawRect(mouseP.x, mouseP.y, 40, 40);
         g.fillRect(mouseP.x, mouseP.y, 40, 40);
@@ -183,7 +186,10 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
             time++;
         }
         if (e.getSource() == timer2) {
-            timer2.setDelay(500 - (int) (snake.getScore() * 2.3));
+            int newDelay = 500 - (int) (snake.getScore() * 7.5);
+            if (newDelay > 0) {
+                timer2.setDelay(newDelay);
+            }
             double random = Math.random();
             if (random > 0.7) {
                 int randomX = (int) (Math.random() * 600);
