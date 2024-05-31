@@ -54,7 +54,7 @@ public class Snake {
 
     public void move() {
         count++;
-        if (count == 250) {
+        if (count == 220) {
             if (direction.equals("up")) {
                 yCoord += MOVE_AMT;
             }

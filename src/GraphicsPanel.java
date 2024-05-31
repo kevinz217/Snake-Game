@@ -55,6 +55,11 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         g.drawImage(apple.getImage(), apple.getxCoord(), apple.getyCoord(), null);
         g.drawImage(orange.getImage(), orange.getxCoord(), orange.getyCoord(), null);
 
+        for (int i = 0; i < images.size(); i++) {
+            Blockade image = images.get(i);
+            g.drawImage(image.getImage(), image.getxCoord(), image.getyCoord(), null); // draw leaves
+        }
+
         // this loop does two things:  it draws each Coin that gets placed with mouse clicks,
         // and it also checks if the player has "intersected" (collided with) the Coin, and if so,
         // the score goes up and the Coin is removed from the arraylist
@@ -110,14 +115,9 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         }
         if (!gameOver) {
             snake.move();
+        } else {
             timer.stop();
             timer2.stop();
-        }
-
-
-        for (int i = 0; i < images.size(); i++) {
-            Blockade image = images.get(i);
-            g.drawImage(image.getImage(), image.getxCoord(), image.getyCoord(), null); // draw leaves
         }
 
         if (snake.playerRect().intersects(rectangle)) {
@@ -185,12 +185,12 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         if (e.getSource() == timer2) {
             timer2.setDelay(500 - (int) (snake.getScore() * 2.3));
             double random = Math.random();
-            //if (random > 0.7) {
+            if (random > 0.7) {
                 int randomX = (int) (Math.random() * 600);
                 int randomY = (int) (Math.random() * 560);
                 Blockade newImage = new Blockade(randomX, randomY, "src/assets/download.jpg");
                 images.add(newImage);
-            //}
+            }
         }
     }
 
