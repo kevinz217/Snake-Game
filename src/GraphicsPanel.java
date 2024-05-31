@@ -15,8 +15,9 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     private BufferedImage background;
     private Snake snake;
     private boolean[] pressedKeys;
-    //private ArrayList<Fruit> fruits;
+    private ArrayList<Blockade> images;
     private Timer timer;
+    private Timer timer2;
     private int time;
     private boolean gameOver;
 
@@ -29,11 +30,13 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         }
         gameOver = false;
         snake = new Snake("src/assets/test.png", "src/assets/test.png", name);
-        // coins = new ArrayList<>();
+        images = new ArrayList<>();
         pressedKeys = new boolean[128];
         time = 0;
         timer = new Timer(1000, this); // this Timer will call the actionPerformed interface method every 1000ms = 1 second
+        timer2 = new Timer(500, this);
         timer.start();
+        timer2.start();
         addKeyListener(this);
         addMouseListener(this);
         setFocusable(true); // this line of code + one below makes this panel active for keylistener events
@@ -78,7 +81,6 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         g.fillRect(mouseP.x, mouseP.y, 40, 40);
         Rectangle rectangle = new Rectangle(mouseP.x, mouseP.y, 40, 40);
 
-
         // player moves left (A)
         if (pressedKeys[65]) {
             if (!snake.getDirection().equals("right")) {
@@ -108,6 +110,14 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         }
         if (!gameOver) {
             snake.move();
+            timer.stop();
+            timer2.stop();
+        }
+
+
+        for (int i = 0; i < images.size(); i++) {
+            Blockade image = images.get(i);
+            g.drawImage(image.getImage(), image.getxCoord(), image.getyCoord(), null); // draw leaves
         }
 
         if (snake.playerRect().intersects(rectangle)) {
@@ -148,18 +158,16 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     public void mousePressed(MouseEvent e) { } // unimplemented
 
     public void mouseReleased(MouseEvent e) {
-        /*
         if (e.getButton() == MouseEvent.BUTTON1) {  // left mouse click
             Point mouseClickLocation = e.getPoint();
-            Coin coin = new Coin(mouseClickLocation.x, mouseClickLocation.y);
-            coins.add(coin);
-        } else {
-            Point mouseClickLocation = e.getPoint();
-            if (player.playerRect().contains(mouseClickLocation)) {
-                player.turn();
+            for (int i = 0; i < images.size(); i++) {
+                Blockade image = images.get(i);
+                if (image.aRect().contains(mouseClickLocation)) {
+                    images.remove(image);
+                    snake.eatFruit();
+                }
             }
         }
-        */
     }
 
     public void mouseEntered(MouseEvent e) {
@@ -167,13 +175,22 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
 
     public void mouseExited(MouseEvent e) {
         gameOver = true;
-
     }
 
     // ACTIONLISTENER INTERFACE METHODS: used for buttons AND timers!
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() instanceof Timer) {
+        if (e.getSource() == timer) {
             time++;
+        }
+        if (e.getSource() == timer2) {
+            timer2.setDelay(500 - (int) (snake.getScore() * 2.3));
+            double random = Math.random();
+            //if (random > 0.7) {
+                int randomX = (int) (Math.random() * 600);
+                int randomY = (int) (Math.random() * 560);
+                Blockade newImage = new Blockade(randomX, randomY, "src/assets/download.jpg");
+                images.add(newImage);
+            //}
         }
     }
 
