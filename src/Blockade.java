@@ -31,10 +31,22 @@ public class Blockade {
         return image;
     }
 
-    public Rectangle aRect() {
-        int imageHeight = getImage().getHeight();
-        int imageWidth = getImage().getWidth();
-        Rectangle rect = new Rectangle(xCoord, yCoord, imageWidth, imageHeight);
-        return rect;
+    public Rectangle imgRect() {
+        BufferedImage compare = null;
+        try {
+             compare = ImageIO.read(new File("src/assets/windows8_window.png"));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        if (image.equals(compare))  {
+            int asd = xCoord + 120;
+            Rectangle rect = new Rectangle(asd, yCoord, 160, 40);
+            return rect;
+        } else {
+            int imageHeight = getImage().getHeight();
+            int imageWidth = getImage().getWidth();
+            Rectangle rect = new Rectangle(xCoord, yCoord, imageWidth, imageHeight);
+            return rect;
+        }
     }
 }

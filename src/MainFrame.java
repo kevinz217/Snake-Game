@@ -8,7 +8,7 @@ public class MainFrame implements Runnable
      public MainFrame(String name) {
         JFrame frame = new JFrame("Snake Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(650, 600); // 600 height of image + 40 for window menu bar
+        frame.setSize(655, 595); // 600 height of image + 40 for window menu bar
         frame.setLocationRelativeTo(null); // auto-centers frame in screen
 
         // create and add panel

@@ -17,7 +17,7 @@ public class Snake {
     private int count;
     public Snake(String leftImg, String rightImg, String name) {
         direction = "right";
-        xCoord = 40; // starting position is (50, 435), right on top of ground
+        xCoord = 40;
         yCoord = 400;
         score = 0;
         count = 0;
@@ -47,6 +47,8 @@ public class Snake {
     public int getCount() {
         return count;
     }
+
+    public void setScore(int num) {score = num;}
 
     public void faceDirection(String direction) {
         this.direction = direction;

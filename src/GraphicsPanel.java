@@ -30,6 +30,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         }
         gameOver = false;
         snake = new Snake("src/assets/test.png", "src/assets/test.png", name);
+        snake.setScore(50);
         images = new ArrayList<>();
         pressedKeys = new boolean[128];
         time = 0;
@@ -84,9 +85,14 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         g.drawString("Timer2 val: " + timer2.getDelay(), 20, 130);
 
         Point mouseP = getMousePosition();
-        g.drawRect(mouseP.x, mouseP.y, 40, 40);
-        g.fillRect(mouseP.x, mouseP.y, 40, 40);
-        Rectangle rectangle = new Rectangle(mouseP.x, mouseP.y, 40, 40);
+        if (mouseP != null) {
+            g.drawRect(mouseP.x, mouseP.y, 40, 40);
+            g.fillRect(mouseP.x, mouseP.y, 40, 40);
+            Rectangle rectangle = new Rectangle(mouseP.x, mouseP.y, 40, 40);
+            if (snake.playerRect().intersects(rectangle)) {
+                gameOver = true;
+            }
+        }
 
         // player moves left (A)
         if (pressedKeys[65]) {
@@ -115,15 +121,26 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
                 snake.faceDirection("up");
             }
         }
+
         if (!gameOver) {
             snake.move();
         } else {
             timer.stop();
             timer2.stop();
+            g.setFont(new Font("Sans Serif", Font.BOLD, 70));
+            g.setColor(Color.RED);
+            g.drawString("GAME OVER", 120, 300);
+            clearLeaves();
         }
 
-        if (snake.playerRect().intersects(rectangle)) {
+        if (snake.getxCoord() < 0 || snake.getyCoord() < 0 || snake.getxCoord() >= 630 || snake.getyCoord() >= 560) {
             gameOver = true;
+        }
+    }
+
+    private void clearLeaves() {
+        for (int i = images.size() - 1; i >= 0; i--) {
+            images.remove(i);
         }
     }
 
@@ -164,7 +181,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
             Point mouseClickLocation = e.getPoint();
             for (int i = 0; i < images.size(); i++) {
                 Blockade image = images.get(i);
-                if (image.aRect().contains(mouseClickLocation)) {
+                if (image.imgRect().contains(mouseClickLocation)) {
                     images.remove(image);
                     snake.eatFruit();
                 }
@@ -193,8 +210,14 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
             if (random > 0.55) {
                 int randomX = (int) (Math.random() * 600);
                 int randomY = (int) (Math.random() * 560);
-                Blockade newImage = new Blockade(randomX, randomY, "src/assets/download.jpg");
-                images.add(newImage);
+                double random2 = Math.random();
+                if (random2 > 0.5) {
+                    Blockade newImage = new Blockade(randomX, randomY, "src/assets/windows8_window.png");
+                    images.add(newImage);
+                } else {
+                    Blockade newImage = new Blockade(randomX, randomY, "src/assets/download.jpg");
+                    images.add(newImage);
+                }
             }
         }
     }
