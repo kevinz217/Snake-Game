@@ -5,13 +5,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class Fruit {
-    private int xCoord;
-    private int yCoord;
+    private int xCord;
+    private int yCord;
     private BufferedImage image;
 
     public Fruit(int x, int y, String fruitImg) {
-        xCoord = x;
-        yCoord = y;
+        xCord = x;
+        yCord = y;
         try {
             image = ImageIO.read(new File(fruitImg));
         } catch (IOException e) {
@@ -19,12 +19,12 @@ public class Fruit {
         }
     }
 
-    public int getxCoord() {
-        return xCoord;
+    public int getxCord() {
+        return xCord;
     }
 
-    public int getyCoord() {
-        return yCoord;
+    public int getyCord() {
+        return yCord;
     }
 
     public BufferedImage getImage() {
@@ -35,7 +35,7 @@ public class Fruit {
     public Rectangle coinRect() {
         int imageHeight = getImage().getHeight();
         int imageWidth = getImage().getWidth();
-        Rectangle rect = new Rectangle(xCoord, yCoord, imageWidth, imageHeight);
+        Rectangle rect = new Rectangle(xCord, yCord, imageWidth, imageHeight);
         return rect;
     }
 }

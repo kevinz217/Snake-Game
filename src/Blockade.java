@@ -5,13 +5,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class Blockade {
-    private int xCoord;
-    private int yCoord;
+    private int xCord;
+    private int yCord;
     private BufferedImage image;
 
     public Blockade(int x, int y, String idkWhat) {
-        xCoord = x;
-        yCoord = y;
+        xCord = x;
+        yCord = y;
         try {
             image = ImageIO.read(new File(idkWhat));
         } catch (IOException e) {
@@ -19,12 +19,12 @@ public class Blockade {
         }
     }
 
-    public int getxCoord() {
-        return xCoord;
+    public int getxCord() {
+        return xCord;
     }
 
-    public int getyCoord() {
-        return yCoord;
+    public int getyCord() {
+        return yCord;
     }
 
     public BufferedImage getImage() {
@@ -39,13 +39,13 @@ public class Blockade {
             System.out.println(e.getMessage());
         }
         if (image.equals(compare))  {
-            int asd = xCoord + 120;
-            Rectangle rect = new Rectangle(asd, yCoord, 160, 40);
+            int asd = xCord + 120;
+            Rectangle rect = new Rectangle(asd, yCord, 160, 40);
             return rect;
         } else {
             int imageHeight = getImage().getHeight();
             int imageWidth = getImage().getWidth();
-            Rectangle rect = new Rectangle(xCoord, yCoord, imageWidth, imageHeight);
+            Rectangle rect = new Rectangle(xCord, yCord, imageWidth, imageHeight);
             return rect;
         }
     }

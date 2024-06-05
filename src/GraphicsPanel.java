@@ -30,11 +30,10 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         }
         gameOver = false;
         snake = new Snake("src/assets/test.png", "src/assets/test.png", name);
-        snake.setScore(50);
         images = new ArrayList<>();
         pressedKeys = new boolean[128];
         time = 0;
-        timer = new Timer(1000, this); // this Timer will call the actionPerformed interface method every 1000ms = 1 second
+        timer = new Timer(1000, this);
         timer2 = new Timer(500, this);
         timer.start();
         timer2.start();
@@ -50,45 +49,31 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         g.drawImage(background, 0, 0, null);
         // black background
         setBackground(Color.black);
-        g.drawImage(snake.getPlayerImage(), snake.getxCoord(), snake.getyCoord(), null);
+        g.drawImage(snake.getPlayerImage(), snake.getxCord(), snake.getyCord(), null);
         Fruit apple = new Fruit(320, 400, "src/assets/apple.png");
         Fruit orange = new Fruit(320, 480, "src/assets/orange.png");
-        g.drawImage(apple.getImage(), apple.getxCoord(), apple.getyCoord(), null);
-        g.drawImage(orange.getImage(), orange.getxCoord(), orange.getyCoord(), null);
+        g.drawImage(apple.getImage(), apple.getxCord(), apple.getyCord(), null);
+        g.drawImage(orange.getImage(), orange.getxCord(), orange.getyCord(), null);
 
+        // draws each blockade
         for (int i = 0; i < images.size(); i++) {
             Blockade image = images.get(i);
-            g.drawImage(image.getImage(), image.getxCoord(), image.getyCoord(), null); // draw leaves
+            g.drawImage(image.getImage(), image.getxCord(), image.getyCord(), null);
         }
 
-        // this loop does two things:  it draws each Coin that gets placed with mouse clicks,
-        // and it also checks if the player has "intersected" (collided with) the Coin, and if so,
-        // the score goes up and the Coin is removed from the arraylist
-        /*
-        for (int i = 0; i < coins.size(); i++) {
-            Coin coin = coins.get(i);
-            g.drawImage(coin.getImage(), coin.getxCoord(), coin.getyCoord(), null); // draw Coin
-            if (player.playerRect().intersects(coin.coinRect())) { // check for collision
-                playCoinSound();
-                player.collectCoin();
-                coins.remove(i);
-                i--;
-            }
-        }
-            */
         // draw score
-        g.setFont(new Font("Courier New", Font.BOLD, 24));
+        g.setFont(new Font("Courier New", Font.PLAIN, 24));
         g.setColor(Color.WHITE);
         g.drawString("Your Score: " + snake.getScore(), 20, 40);
         g.drawString("Time: " + time, 20, 70);
         g.drawString("Test val: " + snake.getCount(), 20, 100);
         g.drawString("Timer2 val: " + timer2.getDelay(), 20, 130);
 
+        // draw mouse box
         Point mouseP = getMousePosition();
         if (mouseP != null) {
-            g.drawRect(mouseP.x, mouseP.y, 40, 40);
-            g.fillRect(mouseP.x, mouseP.y, 40, 40);
-            Rectangle rectangle = new Rectangle(mouseP.x, mouseP.y, 40, 40);
+            g.fillRect(mouseP.x - 10, mouseP.y - 10, 20, 20);
+            Rectangle rectangle = new Rectangle(mouseP.x - 10, mouseP.y - 10, 10, 10);
             if (snake.playerRect().intersects(rectangle)) {
                 gameOver = true;
             }
@@ -122,6 +107,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
             }
         }
 
+        // draws text when its game over or moves the snake
         if (!gameOver) {
             snake.move();
         } else {
@@ -133,7 +119,8 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
             clearLeaves();
         }
 
-        if (snake.getxCoord() < 0 || snake.getyCoord() < 0 || snake.getxCoord() >= 630 || snake.getyCoord() >= 560) {
+        // game over condition
+        if (snake.getxCord() < 0 || snake.getyCord() < 0 || snake.getxCord() >= 630 || snake.getyCord() >= 560) {
             gameOver = true;
         }
     }
@@ -168,6 +155,9 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         pressedKeys[key] = false;
+        if (key == 69) {
+            snake.eatFruit();
+        }
     }
 
     // ----- MouseListener interface methods -----
@@ -177,13 +167,13 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     public void mousePressed(MouseEvent e) { } // unimplemented
 
     public void mouseReleased(MouseEvent e) {
+        // removes blockade on click
         if (e.getButton() == MouseEvent.BUTTON1) {  // left mouse click
             Point mouseClickLocation = e.getPoint();
             for (int i = 0; i < images.size(); i++) {
                 Blockade image = images.get(i);
                 if (image.imgRect().contains(mouseClickLocation)) {
                     images.remove(image);
-                    snake.eatFruit();
                 }
             }
         }
@@ -201,18 +191,19 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         if (e.getSource() == timer) {
             time++;
         }
+        // generates the blockades based on the second timer
         if (e.getSource() == timer2) {
             int newDelay = 500 - (int) (snake.getScore() * 7.5);
             if (newDelay > 0) {
                 timer2.setDelay(newDelay);
             }
             double random = Math.random();
-            if (random > 0.55) {
+            if (random > 0.65) {
                 int randomX = (int) (Math.random() * 600);
                 int randomY = (int) (Math.random() * 560);
                 double random2 = Math.random();
                 if (random2 > 0.5) {
-                    Blockade newImage = new Blockade(randomX, randomY, "src/assets/windows8_window.png");
+                    Blockade newImage = new Blockade(randomX, randomY, "src/assets/download.jpg");
                     images.add(newImage);
                 } else {
                     Blockade newImage = new Blockade(randomX, randomY, "src/assets/download.jpg");

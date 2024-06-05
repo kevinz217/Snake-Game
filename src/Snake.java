@@ -8,36 +8,53 @@ public class Snake {
     private final double MOVE_AMT = 40;
     private String direction;
     private int score;
-    private BufferedImage right;
-    private BufferedImage left;
-    private int xCoord;
-    private int yCoord;
-    private BufferedImage up;
-    private BufferedImage down;
+    private BufferedImage body;
+    private int xCord;
+    private int yCord;
     private int count;
+    private class Block {
+        int x;
+        int y;
+
+        Block(int x, int y){
+            this.x = x;
+            this.y =y;
+        }
+        public int getX(){
+            return x;
+        }
+        public int getY(){
+            return y;
+        }
+
+        public void setX(int n){
+            x = n;
+        }
+
+        public void setY(int y) {
+            this.y = y;
+        }
+    }
     public Snake(String leftImg, String rightImg, String name) {
         direction = "right";
-        xCoord = 40;
-        yCoord = 400;
+        xCord = 40;
+        yCord = 400;
         score = 0;
         count = 0;
         try {
-            left = ImageIO.read(new File(leftImg));
-            right = ImageIO.read(new File(rightImg));
-            // temp images
-            up = ImageIO.read(new File(rightImg));
-            down = ImageIO.read(new File(rightImg));
+            body = ImageIO.read(new File(leftImg));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public int getxCoord() {
-        return (int) xCoord;
+
+    public int getxCord() {
+        return (int) xCord;
     }
 
-    public int getyCoord() {
-        return (int) yCoord;
+    public int getyCord() {
+        return (int) yCord;
     }
 
     public int getScore() {
@@ -58,35 +75,23 @@ public class Snake {
         count++;
         if (count == 220) {
             if (direction.equals("up")) {
-                yCoord += MOVE_AMT;
+                yCord += MOVE_AMT;
             }
             if (direction.equals("down")) {
-                yCoord -= MOVE_AMT;
+                yCord -= MOVE_AMT;
             }
             if (direction.equals("left")) {
-                xCoord -= MOVE_AMT;
+                xCord -= MOVE_AMT;
             }
             if (direction.equals("right")) {
-                xCoord += MOVE_AMT;
+                xCord += MOVE_AMT;
             }
             count = 0;
         }
     }
 
     public BufferedImage getPlayerImage() {
-        if (direction.equals("up")) {
-            return up;
-        }
-        if (direction.equals("down")) {
-            return down;
-        }
-        if (direction.equals("left")) {
-            return left;
-        }
-        if (direction.equals("right")) {
-            return right;
-        }
-        return null;
+        return body;
     }
 
     public void eatFruit() {
@@ -97,7 +102,7 @@ public class Snake {
     public Rectangle playerRect() {
         int imageHeight = getPlayerImage().getHeight();
         int imageWidth = getPlayerImage().getWidth();
-        Rectangle rect = new Rectangle(xCoord, yCoord, imageWidth, imageHeight);
+        Rectangle rect = new Rectangle(xCord, yCord, imageWidth, imageHeight);
         return rect;
     }
 }
