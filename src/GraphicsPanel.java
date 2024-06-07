@@ -13,13 +13,17 @@ import java.util.ArrayList;
 public class GraphicsPanel extends JPanel implements KeyListener, MouseListener, ActionListener
         {
     private BufferedImage background;
-    private Snake snake;
+    private Snake snakeH;
+    private ArrayList<Snake> body;
     private boolean[] pressedKeys;
     private ArrayList<Blockade> images;
     private Timer timer;
     private Timer timer2;
     private int time;
     private boolean gameOver;
+
+    private Fruit apple;
+    private Fruit orange;
 
     public GraphicsPanel(String name) {
         try {
@@ -29,14 +33,17 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
             System.out.println(e.getMessage());
         }
         gameOver = false;
-        snake = new Snake("src/assets/test.png", "src/assets/test.png", name);
+        snakeH = new Snake(40, 400, "src/assets/test.png");
         images = new ArrayList<>();
+        body = new ArrayList<Snake>();
         pressedKeys = new boolean[128];
         time = 0;
         timer = new Timer(1000, this);
         timer2 = new Timer(500, this);
         timer.start();
         timer2.start();
+        apple = new Fruit(40, 240, "src/assets/apple.png");
+        orange = new Fruit(240, 40, "src/assets/orange.png");
         addKeyListener(this);
         addMouseListener(this);
         setFocusable(true); // this line of code + one below makes this panel active for keylistener events
@@ -49,9 +56,12 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         g.drawImage(background, 0, 0, null);
         // black background
         setBackground(Color.black);
-        g.drawImage(snake.getPlayerImage(), snake.getxCord(), snake.getyCord(), null);
-        Fruit apple = new Fruit(320, 400, "src/assets/apple.png");
-        Fruit orange = new Fruit(320, 480, "src/assets/orange.png");
+        g.drawImage(snakeH.getPlayerImage(), snakeH.getxCord(), snakeH.getyCord(), null);
+        for (int i = 0; i < body.size(); i++) {
+            Snake bodyPart = body.get(i);
+
+            g.drawImage(bodyPart.getPlayerImage(), bodyPart.getxCord(), bodyPart.getyCord(), null);
+        }
         g.drawImage(apple.getImage(), apple.getxCord(), apple.getyCord(), null);
         g.drawImage(orange.getImage(), orange.getxCord(), orange.getyCord(), null);
 
@@ -64,52 +74,81 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         // draw score
         g.setFont(new Font("Courier New", Font.PLAIN, 24));
         g.setColor(Color.WHITE);
-        g.drawString("Your Score: " + snake.getScore(), 20, 40);
+        g.drawString("Your Score: " + snakeH.getScore(), 20, 40);
         g.drawString("Time: " + time, 20, 70);
-        g.drawString("Test val: " + snake.getCount(), 20, 100);
+        g.drawString("Test val: " + snakeH.getCount(), 20, 100);
         g.drawString("Timer2 val: " + timer2.getDelay(), 20, 130);
+        g.drawString("Total Leaves: " + images.size(), 20, 160);
 
         // draw mouse box
         Point mouseP = getMousePosition();
         if (mouseP != null) {
             g.fillRect(mouseP.x - 10, mouseP.y - 10, 20, 20);
             Rectangle rectangle = new Rectangle(mouseP.x - 10, mouseP.y - 10, 10, 10);
-            if (snake.playerRect().intersects(rectangle)) {
+            // gameover if touches the snake
+            if (snakeH.playerRect().intersects(rectangle)) {
                 gameOver = true;
+            }
+
+            for (int i = 0; i < body.size(); i++) {
+                Snake bodyPart = body.get(i);
+
+                if (bodyPart.playerRect().intersects(rectangle)) {
+                    gameOver = true;
+                }
             }
         }
 
         // player moves left (A)
         if (pressedKeys[65]) {
-            if (!snake.getDirection().equals("right")) {
-                snake.faceDirection("left");
+            if (!snakeH.getDirection().equals("right")) {
+                snakeH.faceDirection("left");
             }
         }
 
         // player moves right (D)
         if (pressedKeys[68]) {
-            if (!snake.getDirection().equals("left")) {
-                snake.faceDirection("right");
+            if (!snakeH.getDirection().equals("left")) {
+                snakeH.faceDirection("right");
             }
         }
 
         // player moves up (W)
         if (pressedKeys[87]) {
-            if (!snake.getDirection().equals("up")) {
-                snake.faceDirection("down");
+            if (!snakeH.getDirection().equals("up")) {
+                snakeH.faceDirection("down");
             }
         }
 
         // player moves down (S)
         if (pressedKeys[83]) {
-            if (!snake.getDirection().equals("down")) {
-                snake.faceDirection("up");
+            if (!snakeH.getDirection().equals("down")) {
+                snakeH.faceDirection("up");
             }
+        }
+
+        // fruit eating
+        if (snakeH.playerRect().intersects(apple.coinRect())) {
+            snakeH.eatFruit();
+            Snake part = new Snake(apple.getxCord(), apple.getyCord(), "src/assets/test.png");
+            int randomX = (int) (Math.random() * 16);
+            int randomY = (int) (Math.random() * 14);
+            apple.setxCord(randomX * 40);
+            apple.setyCord(randomY * 40);
+            body.add(part);
+        } else if (snakeH.playerRect().intersects(orange.coinRect())) {
+            snakeH.eatFruit();
+            Snake part = new Snake(orange.getxCord(), orange.getyCord(), "src/assets/test.png");
+            int randomX = (int) (Math.random() * 16);
+            int randomY = (int) (Math.random() * 14);
+            orange.setxCord(randomX * 40);
+            orange.setyCord(randomY * 40);
+            body.add(part);
         }
 
         // draws text when its game over or moves the snake
         if (!gameOver) {
-            snake.move();
+            snakeH.move();
         } else {
             timer.stop();
             timer2.stop();
@@ -119,9 +158,17 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
             clearLeaves();
         }
 
-        // game over condition
-        if (snake.getxCord() < 0 || snake.getyCord() < 0 || snake.getxCord() >= 630 || snake.getyCord() >= 560) {
+        // game over conditions
+        if (snakeH.getxCord() < 0 || snakeH.getyCord() < 0 || snakeH.getxCord() >= 630 || snakeH.getyCord() >= 560) {
             gameOver = true;
+        }
+
+        for (int i = 0; i < body.size(); i++) {
+            Snake bodyPart = body.get(i);
+
+            if (snakeH.playerRect().intersects(bodyPart.playerRect())) {
+                gameOver = true;
+            }
         }
     }
 
@@ -156,7 +203,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         int key = e.getKeyCode();
         pressedKeys[key] = false;
         if (key == 69) {
-            snake.eatFruit();
+            snakeH.eatFruit();
         }
     }
 
@@ -193,7 +240,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         }
         // generates the blockades based on the second timer
         if (e.getSource() == timer2) {
-            int newDelay = 500 - (int) (snake.getScore() * 7.5);
+            int newDelay = 500 - (int) (snakeH.getScore() * 7.5);
             if (newDelay > 0) {
                 timer2.setDelay(newDelay);
             }

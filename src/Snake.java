@@ -35,10 +35,10 @@ public class Snake {
             this.y = y;
         }
     }
-    public Snake(String leftImg, String rightImg, String name) {
+    public Snake(int x, int y, String leftImg) {
         direction = "right";
-        xCord = 40;
-        yCord = 400;
+        xCord = x;
+        yCord = y;
         score = 0;
         count = 0;
         try {
@@ -73,7 +73,7 @@ public class Snake {
 
     public void move() {
         count++;
-        if (count == 220) {
+        if (count == 230) {
             if (direction.equals("up")) {
                 yCord += MOVE_AMT;
             }
@@ -96,7 +96,6 @@ public class Snake {
 
     public void eatFruit() {
         score++;
-        // add code for length
     }
 
     public Rectangle playerRect() {

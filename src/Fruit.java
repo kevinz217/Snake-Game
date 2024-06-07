@@ -26,6 +26,13 @@ public class Fruit {
     public int getyCord() {
         return yCord;
     }
+    public void setxCord(int newX) {
+        xCord = newX;
+    }
+
+    public void setyCord(int newY) {
+        yCord = newY;
+    }
 
     public BufferedImage getImage() {
         return image;
